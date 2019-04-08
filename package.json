@@ -3,6 +3,9 @@
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
+    "keywords": [],
+    "author": "Leonard Laput",
+    "license": "ISC",
     "scripts": {
         "start": "node index.js",
         "commit": "npx pretty-quick --staged && git cz"
@@ -25,7 +28,9 @@
         "type": "git",
         "url": "https://gitea-testing.mgmt.vavoo.net/iptv/iptv-tal-leonard.git"
     },
-    "keywords": [],
-    "author": "Leonard Laput",
-    "license": "ISC"
+    "config": {
+        "commitizen": {
+            "path": "./node_modules/cz-conventional-changelog"
+        }
+    }
 }
