@@ -1,0 +1,31 @@
+{
+    "name": "iptv-tal-leonard",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "commit": "npx pretty-quick --staged && git cz"
+    },
+    "dependencies": {
+        "express": "^4.16.4",
+        "tal": "^10.0.0",
+        "mustache-express": "^1.2.8"
+    },
+    "devDependencies": {
+        "commitizen": "^3.0.7",
+        "cz-conventional-changelog": "^2.1.0",
+        "eslint": "^5.16.0",
+        "husky": "^1.3.1",
+        "nodemon": "^1.18.10",
+        "prettier": "^1.16.4",
+        "pretty-quick": "^1.10.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://gitea-testing.mgmt.vavoo.net/iptv/iptv-tal-leonard.git"
+    },
+    "keywords": [],
+    "author": "Leonard Laput",
+    "license": "ISC"
+}
