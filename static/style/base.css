@@ -1,5 +1,6 @@
 html {
 	height: 100%;
+	background-color: #000;
 }
 
 body {
@@ -10,7 +11,6 @@ body {
 	font-family: 'Helvetica', sans-serif;
 	font-weight: lighter;
 	color: #d4d4d4;
-	background-color: #000000;
 }
 
 object {
@@ -142,12 +142,12 @@ initial element background in the base stylesheet, not in dynamically loaded sty
 	max-width: 600px;
 	padding: 8px;
 	margin: 8px auto 0 auto;
-	color: #000000;
+	color: #000;
 }
 
 .buttonFocussed {
 	background-color: #ffd700;
-	color: #000000;
+	color: #000;
 }
 
 .buttonFocussed.menuendpoint {
@@ -185,7 +185,7 @@ initial element background in the base stylesheet, not in dynamically loaded sty
 	display: block;
 	text-align: center;
 	padding: 8px;
-	color: #000000;
+	color: #000;
 }
 
 #playerButtons .button {
