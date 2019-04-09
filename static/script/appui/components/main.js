@@ -1,4 +1,10 @@
-define('iptv/appui/components/main', ['antie/widgets/component', 'antie/widgets/button', 'antie/widgets/label'], function(Component, Button, Label) {
+define('iptv/appui/components/main', [
+	'antie/widgets/component',
+	'antie/widgets/button',
+	'antie/widgets/label',
+	'antie/storageprovider',
+	'iptv/appui/helpers/translate'
+], function(Component, Button, Label, StorageProvider, Translate) {
 	// All components extend Component
 	return Component.extend({
 		init: function init() {
@@ -7,13 +13,22 @@ define('iptv/appui/components/main', ['antie/widgets/component', 'antie/widgets/
 			// It is important to call the constructor of the superclass
 			init.base.call(this, 'maincomponent');
 
+			// // Get a reference to the current application and device objects
+			this._application = this.getCurrentApplication();
+			this._device = this._application.getDevice();
+			this._storage = this._device.getStorage(StorageProvider.STORAGE_TYPE_PERSISTENT, 'iptv');
+
+			// Initialize tranlator
+			var locale = this._storage.getItem('locale') || 'en';
+			var t = new Translate(locale);
+
 			// Add label to the component
-			var helloWorldLabel = new Label('helloWorldLabel', 'Hello World!');
+			var helloWorldLabel = new Label('helloWorldLabel', t.translate('Hello World'));
 			self.appendChildWidget(helloWorldLabel);
 
 			// Add button to the component
 			var testButton = new Button();
-			testButton.appendChildWidget(new Label('Select me!'));
+			testButton.appendChildWidget(new Label(t.translate('Select me!')));
 			testButton.addEventListener('select', function() {
 				alert('I am selected!');
 			});
