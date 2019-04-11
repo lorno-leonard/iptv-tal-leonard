@@ -1,3 +1,7 @@
+* {
+	box-sizing: border-box;
+}
+
 html {
 	height: 100%;
 	background-color: #000;
@@ -8,7 +12,7 @@ body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	font-family: 'Helvetica', sans-serif;
+	font-family: 'Raleway', sans-serif;
 	font-weight: lighter;
 	color: #d4d4d4;
 }
@@ -33,82 +37,134 @@ object {
 	padding: 0 50px;
 }
 
+/* Keyboard */
+.iptv-keyboard-container {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	background-color: #152348;
+}
+
+.iptv-keyboard-textbox-container {
+	display: block;
+	padding: 10px;
+}
+
+.iptv-keyboard-textbox-container .iptv-keyboard-textbox {
+	display: flex;
+	height: 50px;
+	width: 100%;
+	background: #fff;
+	border-radius: 5px;
+	color: #152348;
+	align-items: center;
+	font-size: 1.5rem;
+	padding-left: 10px;
+}
+
+.keyboard .row {
+	display: flex;
+	justify-content: center;
+}
+
+.keyboard .row .keyboardButton,
+.keyboard .row .spacer {
+	width: 50px;
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: bold;
+}
+
+.keyboard .row .firstcol,
+.keyboard .row .lastcol {
+	width: 100px;
+}
+
+.keyboard .row .keyboardButton.focus {
+	background-color: #fff;
+	color: #152348;
+}
+
 /* List widgets */
-.horizontallist,
+/* .horizontallist,
 .verticallist {
 	position: relative;
 }
 
 .horizontallist .listitem {
 	display: inline-block;
-}
+} */
 
 /* nested lists - use #IDs instead for more complex layouts */
-.verticallist .horizontallist .listitem {
+/* .verticallist .horizontallist .listitem {
 	display: inline-block;
 }
 
 .verticallist .listitem {
 	display: block;
 	position: relative;
-}
+} */
 
 /* nested lists - use #IDs instead for more complex layouts */
-.horizontallist .verticallist .listitem {
+/* .horizontallist .verticallist .listitem {
 	display: block;
-}
+} */
 
 /* Horizontal carousel widgets */
 /* the mask is the top level of the carousel and defines where it is displayed and how much is visible */
-.horizontallistmask {
+/* .horizontallistmask {
 	overflow: hidden;
 	width: 100%;
-}
+} */
 
 /* ensure nested carousels have correct formatting, you may need to target IDs in complex layouts */
-.horizontallistmask .horizontallist .listitem {
+/* .horizontallistmask .horizontallist .listitem {
 	display: inline-block;
-}
+} */
 
-.horizontalcarousel {
+/* .horizontalcarousel {
 	width: 99999px; /* needs to be big enough so carousel plus clones do not flow onto more then one line */
-}
+/* } */
 
 /* DEVICE SPECIFIC DEFAULTS EXAMPLE ------------------ */
 
 /* if you target some consoles you may need to add additional styles like this */
-.someConsoles .horizontallist .listitem {
+/* .someConsoles .horizontallist .listitem {
 	display: inline-block;
 	/* float: left; */
-}
+/* } */
 
 /* If you target some older tv models, you will need to specify
 initial element background in the base stylesheet, not in dynamically loaded styles. */
 
-.sometv.layout540p #app {
+/* .sometv.layout540p #app {
 	width: 960px;
 	height: 540px;
 	/*background-image: url(some/image/url_540.png); */
-}
+/* } */
 
-.sometv.layout720p #app {
+/* .sometv.layout720p #app {
 	width: 1280px;
-	height: 720px;
-	/*background-image: url(some/image/url_720.png); */
-}
+	height: 720px; */
+/*background-image: url(some/image/url_720.png); */
+/* } */
 
-.sometv.layout1080p #app {
+/* .sometv.layout1080p #app {
 	width: 1920px;
-	height: 1080px;
-	/*background-image: url(some/image/url_1080.png); */
-}
+	height: 1080px; */
+/*background-image: url(some/image/url_1080.png); */
+/* } */
 
 /* SAMPLEAPP BASE STYLES */
 
 /* Core */
 
 /* Maple needs initial element background in base stylesheet... not in dynamically loaded styles! */
-.samsung.layout540p #app {
+/* .samsung.layout540p #app {
 	width: 960px;
 	height: 540px;
 	background-color: #000;
@@ -124,10 +180,10 @@ initial element background in the base stylesheet, not in dynamically loaded sty
 	width: 1920px;
 	height: 1080px;
 	background-color: #000;
-}
+} */
 
 /* Sample app specific styles */
-#title {
+/* #title {
 	font-size: 150%;
 	line-height: 120%;
 	display: block;
@@ -193,10 +249,10 @@ initial element background in the base stylesheet, not in dynamically loaded sty
 	padding: 10px;
 	text-align: center;
 	margin: 5px;
-}
+} */
 
 /* Display & Visibility Helpers */
-.display-none {
+/* .display-none {
 	display: none !important;
 }
 
@@ -260,4 +316,4 @@ initial element background in the base stylesheet, not in dynamically loaded sty
 	min-height: 10px;
 	background: #777;
 	position: relative;
-}
+} */
