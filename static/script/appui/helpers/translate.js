@@ -6,6 +6,7 @@ define('iptv/appui/helpers/translate', ['antie/class', 'iptv/appui/translations/
 				de: de
 			};
 			this._lang = lang;
+			this.__ = this.translate;
 		},
 		setLocale: function setLocale(lang) {
 			this._lang = lang;

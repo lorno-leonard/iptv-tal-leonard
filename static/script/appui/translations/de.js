@@ -1,7 +1,7 @@
 define('iptv/appui/translations/de', [], function() {
 	var translations = {
-		'Hello World': 'Hallo Welt',
-		'Select me!': 'Wähle mich aus!'
+		MAIN_CMP_HEADER_LABEL: 'Wiedergabelisten',
+		MAIN_CMP_HEADER_LANG_BUTTON: 'Sprache'
 	};
 
 	return translations;
