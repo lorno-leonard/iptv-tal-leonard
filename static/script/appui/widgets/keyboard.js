@@ -15,7 +15,8 @@ define('iptv/appui/widgets/keyboard', ['antie/widgets/component', 'antie/widgets
 			this._addKeyboardTextbox();
 			this._addKeyboard();
 		},
-		_addKeyboardTextbox: function _addKeyboardTextbox() {
+
+		_addKeyboardTextbox: function() {
 			var textboxContainer = new Component('iptvKeyboardTextboxContainer');
 			textboxContainer.addClass('iptv-keyboard-textbox-container');
 
@@ -26,12 +27,14 @@ define('iptv/appui/widgets/keyboard', ['antie/widgets/component', 'antie/widgets
 			textboxContainer.appendChildWidget(textbox);
 			this.appendChildWidget(textboxContainer);
 		},
-		_addKeyboard: function _addKeyboard() {
+
+		_addKeyboard: function() {
 			var self = this;
 			var cols = 15;
 			var rows = 3;
 			var keys = [' qwertyuiop789 ', '-asdfghjkl/456-', '_zxcvbnm.:0123_'].join('');
 			var keyboard = new Keyboard('iptvKeyboard', cols, rows, keys);
+
 			keyboard.addClass('iptv-keyboard');
 			keyboard.setActiveChildKey('q');
 			keyboard.setCapitalisation(1);
