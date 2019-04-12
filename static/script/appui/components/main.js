@@ -21,32 +21,23 @@ define('iptv/appui/components/main', [
 			this._initTranslator();
 
 			// Initialize widgets
+			this._header = null;
 			this._keyboard = null;
 			this._initWidgets();
 
 			// Initialize event listeners
 			this._initEventListeners();
-
-			// // Add label to the component
-			// var helloWorldLabel = new Label('helloWorldLabel', t.translate('Hello World'));
-			// self.appendChildWidget(helloWorldLabel);
-
-			// // Add button to the component
-			// var testButton = new Button();
-			// testButton.appendChildWidget(new Label(t.translate('Select me!')));
-			// testButton.addEventListener('select', function() {
-			// 	alert('I am selected!');
-			// });
-			// self.appendChildWidget(testButton);
 		},
 
 		_initTranslator: function() {
 			var locale = this._storage.getItem('locale') || 'en';
-			this._translator = new HelperTranslate(locale);
+			this._translator = new HelperTranslate(locale, this._storage);
+			// this._translator.setLocale('en');
 		},
 
 		_initWidgets: function() {
-			this._addKeyboardWidget();
+			this._addHeader();
+			this._addKeyboard();
 		},
 
 		_initEventListeners: function() {
@@ -63,16 +54,43 @@ define('iptv/appui/components/main', [
 				});
 			});
 
+			this.addEventListener('aftershow', function() {
+				// self.setActiveChildWidget(self._keyboard);
+			});
+
 			// calls Application.ready() the first time the component is shown
 			// the callback removes itself once it's fired to avoid multiple calls.
 			this.addEventListener('aftershow', function appReady() {
-				console.log('aftershow', 'maincomponent');
 				self.getCurrentApplication().ready();
 				self.removeEventListener('aftershow', appReady);
 			});
 		},
 
-		_addKeyboardWidget: function() {
+		/* ADD WIDGETS */
+		_addHeader: function() {
+			var t = this._translator;
+
+			// Header Label
+			var headerLabel = new Label('iptvMainCmpHeaderLabel');
+			headerLabel.setText(t.__('MAIN_CMP_HEADER_LABEL'));
+
+			// Header Language button toggler
+			var headerLangButtonLabel = new Label('iptvMainCmpHeaderLangButtonLabel');
+			headerLangButtonLabel.setText(t.__('MAIN_CMP_HEADER_LANG_BUTTON'));
+			var headerLangButton = new Button('iptvMainCmpHeaderLangButton');
+			headerLangButton.appendChildWidget(headerLangButtonLabel);
+
+			// Header
+			var header = new Component('iptvMainCmpHeader');
+			header.addClass('header');
+			header.addClass('iptv-main-cmp-header');
+			header.appendChildWidget(headerLabel);
+			header.appendChildWidget(headerLangButton);
+			this._header = header;
+			this.appendChildWidget(header);
+		},
+
+		_addKeyboard: function() {
 			var keyboard = new WidgetKeyboard('ipTvKeyboardContainer');
 			this._keyboard = keyboard;
 			this.appendChildWidget(keyboard);

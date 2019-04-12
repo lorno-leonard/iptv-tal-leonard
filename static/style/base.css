@@ -37,6 +37,28 @@ object {
 	padding: 0 50px;
 }
 
+/* Button */
+.button {
+	padding: 8px 16px;
+	text-align: center;
+	background-color: #fff;
+	color: #152348;
+}
+
+/* Header */
+.header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	background-color: #152348;
+	padding: 10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
 /* Keyboard */
 .iptv-keyboard-container {
 	position: absolute;
@@ -77,6 +99,8 @@ object {
 	align-items: center;
 	justify-content: center;
 	font-weight: bold;
+	background-color: transparent;
+	color: #fff;
 }
 
 .keyboard .row .firstcol,
@@ -85,7 +109,7 @@ object {
 }
 
 .keyboard .row .keyboardButton.focus {
-	background-color: #fff;
+	background-color: #06aef8;
 	color: #152348;
 }
 
