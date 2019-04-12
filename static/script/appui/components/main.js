@@ -38,10 +38,10 @@ define('iptv/appui/components/main', [
 
 			// calls Application.ready() the first time the component is shown
 			// the callback removes itself once it's fired to avoid multiple calls.
-			// this.addEventListener('aftershow', function appReady() {
-			// 	self.getCurrentApplication().ready();
-			// 	self.removeEventListener('aftershow', appReady);
-			// });
+			this.addEventListener('aftershow', function appReady() {
+				self.getCurrentApplication().ready();
+				self.removeEventListener('aftershow', appReady);
+			});
 		},
 		_initTranslator: function _initTranslator() {
 			var locale = this._storage.getItem('locale') || 'en';

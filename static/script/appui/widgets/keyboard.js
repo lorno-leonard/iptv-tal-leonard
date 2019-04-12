@@ -1,9 +1,9 @@
-define('iptv/appui/widgets/keyboard', ['antie/widgets/componentcontainer', 'antie/widgets/keyboard', 'antie/widgets/label'], function(
-	ComponentContainer,
+define('iptv/appui/widgets/keyboard', ['antie/widgets/component', 'antie/widgets/keyboard', 'antie/widgets/label'], function(
+	Component,
 	Keyboard,
 	Label
 ) {
-	var ipTvKeyboard = ComponentContainer.extend({
+	var ipTvKeyboard = Component.extend({
 		init: function init(id) {
 			init.base.call(this, id);
 
@@ -16,7 +16,7 @@ define('iptv/appui/widgets/keyboard', ['antie/widgets/componentcontainer', 'anti
 			this._addKeyboard();
 		},
 		_addKeyboardTextbox: function _addKeyboardTextbox() {
-			var textboxContainer = new ComponentContainer('iptvKeyboardTextboxContainer');
+			var textboxContainer = new Component('iptvKeyboardTextboxContainer');
 			textboxContainer.addClass('iptv-keyboard-textbox-container');
 
 			var textbox = new Label('iptvKeyboardTextbox', '');
