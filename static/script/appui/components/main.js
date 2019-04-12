@@ -2,11 +2,19 @@ define('iptv/appui/components/main', [
 	'antie/widgets/component',
 	'antie/widgets/button',
 	'antie/widgets/label',
+	'antie/widgets/verticallist',
 	'antie/storageprovider',
+	'antie/datasource',
 	'iptv/appui/widgets/keyboard',
-	'iptv/appui/helpers/translate'
-], function(Component, Button, Label, StorageProvider, WidgetKeyboard, HelperTranslate) {
-	// All components extend Component
+	'iptv/appui/helpers/translate',
+	'iptv/appui/datasources/playlist',
+	'iptv/appui/formatters/playlist'
+], function(Component, Button, Label, VerticalList, StorageProvider, DataSource, WidgetKeyboard, HelperTranslate, DataPlaylist, FormatterPlaylist) {
+	/* Main Component
+	 * - Displays list of playlists from entered m3u url
+	 * - Add playlist
+	 * - Change display language
+	 */
 	return Component.extend({
 		init: function init() {
 			init.base.call(this, 'maincomponent');
@@ -23,6 +31,7 @@ define('iptv/appui/components/main', [
 			// Initialize widgets
 			this._header = null;
 			this._keyboard = null;
+			this._playlist = null;
 			this._initWidgets();
 
 			// Initialize event listeners
@@ -38,6 +47,7 @@ define('iptv/appui/components/main', [
 		_initWidgets: function() {
 			this._addHeader();
 			this._addKeyboard();
+			this._addPlaylist();
 		},
 
 		_initEventListeners: function() {
@@ -56,6 +66,7 @@ define('iptv/appui/components/main', [
 
 			this.addEventListener('aftershow', function() {
 				// self.setActiveChildWidget(self._keyboard);
+				self.setActiveChildWidget(self._playlist.getChildWidget('iptvMainCmpPlaylistMenu'));
 			});
 
 			// calls Application.ready() the first time the component is shown
@@ -91,9 +102,24 @@ define('iptv/appui/components/main', [
 		},
 
 		_addKeyboard: function() {
-			var keyboard = new WidgetKeyboard('ipTvKeyboardContainer');
+			var keyboard = new WidgetKeyboard('ipTvMainCmpKeyboardContainer');
 			this._keyboard = keyboard;
 			this.appendChildWidget(keyboard);
+		},
+
+		_addPlaylist: function() {
+			var dataSource = new DataSource(null, new DataPlaylist(), 'loadData', this._storage);
+			var playlistMenu = new VerticalList('iptvMainCmpPlaylistMenu', new FormatterPlaylist(this._translator), dataSource);
+			playlistMenu.addEventListener('select', function() {
+				console.log('select');
+			});
+
+			// Playlist
+			var playlist = new Component('iptvMainCmpPlaylist');
+			playlist.addClass('playlist');
+			playlist.appendChildWidget(playlistMenu);
+			this._playlist = playlist;
+			this.appendChildWidget(playlist);
 		}
 	});
 });
