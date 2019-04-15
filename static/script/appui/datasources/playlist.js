@@ -1,38 +1,12 @@
 define('iptv/appui/datasources/playlist', ['antie/class'], function(Class) {
 	return Class.extend({
 		loadData: function(callbacks, storage) {
-			// var data = [
-			// 	{
-			// 		type: 'add'
-			// 	}
-			// ];
-			// console.log(storage);
-			callbacks.onSuccess([
-				{
-					id: '1',
-					title: 'Apple'
-				},
-				{
-					id: '2',
-					title: 'Banana'
-				},
-				{
-					id: '3',
-					title: 'Grapes'
-				},
-				{
-					id: '4',
-					title: 'Orange'
-				},
-				{
-					id: '5',
-					title: 'Peach'
-				},
-				{
-					id: '6',
-					title: 'Pear'
-				}
-			]);
+			var data = [];
+			var playlists = storage.getItem('playlists');
+			if (playlists) {
+				data = JSON.parse(playlists);
+			}
+			callbacks.onSuccess(data);
 		}
 	});
 });

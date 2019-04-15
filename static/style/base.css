@@ -47,7 +47,7 @@ object {
 
 .button.focus {
 	background-color: #06aef8;
-	color: #152348;
+	color: #fff;
 }
 
 /* Header */
@@ -121,4 +121,9 @@ object {
 .playlist {
 	margin-top: 75px;
 	padding: 10px;
+}
+
+.playlist .add-playlist-button {
+	width: 200px;
+	margin-bottom: 10px;
 }

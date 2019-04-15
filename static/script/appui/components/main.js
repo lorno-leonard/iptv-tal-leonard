@@ -3,13 +3,26 @@ define('iptv/appui/components/main', [
 	'antie/widgets/button',
 	'antie/widgets/label',
 	'antie/widgets/verticallist',
+	'antie/events/keyevent',
 	'antie/storageprovider',
 	'antie/datasource',
-	'iptv/appui/widgets/keyboard',
+	'iptv/appui/widgets/keyboard-container',
 	'iptv/appui/helpers/translate',
 	'iptv/appui/datasources/playlist',
 	'iptv/appui/formatters/playlist'
-], function(Component, Button, Label, VerticalList, StorageProvider, DataSource, WidgetKeyboard, HelperTranslate, DataPlaylist, FormatterPlaylist) {
+], function(
+	Component,
+	Button,
+	Label,
+	VerticalList,
+	KeyEvent,
+	StorageProvider,
+	DataSource,
+	WidgetKeyboardContainer,
+	HelperTranslate,
+	DataPlaylist,
+	FormatterPlaylist
+) {
 	/* Main Component
 	 * - Displays list of playlists from entered m3u url
 	 * - Add playlist
@@ -33,6 +46,8 @@ define('iptv/appui/components/main', [
 			this._keyboard = null;
 			this._playlist = null;
 			this._initWidgets();
+
+			this._focusedPlaylistChildWidgetId = null;
 
 			// Initialize event listeners
 			this._initEventListeners();
@@ -65,8 +80,35 @@ define('iptv/appui/components/main', [
 			});
 
 			this.addEventListener('aftershow', function() {
-				// self.setActiveChildWidget(self._keyboard);
 				self.setActiveChildWidget(self._playlist.getChildWidget('iptvMainCmpPlaylistMenu'));
+			});
+
+			this.addEventListener('submit', function() {
+				console.log('submit eventlistener');
+
+				var device = self._device;
+				var keyboard = self._keyboard;
+
+				// Hide Keyboard
+				device.hideElement({
+					el: keyboard.outputElement,
+					skipAnim: true
+				});
+
+				var text = self._keyboard.getChildWidget('iptvKeyboard').getText();
+				var playlists = self._storage.getItem('playlists');
+				var playlistArr;
+				if (!playlists) {
+					playlistArr = [text];
+				} else {
+					playlistArr = JSON.parse(playlists);
+					playlistArr.push(text);
+				}
+				self._storage.setItem('playlists', JSON.stringify(playlistArr));
+
+				self.setActiveChildWidget(self._playlist);
+				var playlistMenu = self._playlist.getChildWidget('iptvMainCmpPlaylistMenu');
+				self._playlist.setActiveChildWidget(playlistMenu);
 			});
 
 			// calls Application.ready() the first time the component is shown
@@ -79,6 +121,7 @@ define('iptv/appui/components/main', [
 
 		/* ADD WIDGETS */
 		_addHeader: function() {
+			var self = this;
 			var t = this._translator;
 
 			// Header Label
@@ -90,6 +133,11 @@ define('iptv/appui/components/main', [
 			headerLangButtonLabel.setText(t.__('MAIN_CMP_HEADER_LANG_BUTTON'));
 			var headerLangButton = new Button('iptvMainCmpHeaderLangButton');
 			headerLangButton.appendChildWidget(headerLangButtonLabel);
+			headerLangButton.addEventListener('keydown', function(evt) {
+				if (evt.keyCode === KeyEvent.VK_DOWN) {
+					self.setActiveChildWidget(self._playlist);
+				}
+			});
 
 			// Header
 			var header = new Component('iptvMainCmpHeader');
@@ -102,14 +150,55 @@ define('iptv/appui/components/main', [
 		},
 
 		_addKeyboard: function() {
-			var keyboard = new WidgetKeyboard('ipTvMainCmpKeyboardContainer');
+			var keyboard = new WidgetKeyboardContainer('ipTvMainCmpKeyboardContainer');
 			this._keyboard = keyboard;
 			this.appendChildWidget(keyboard);
 		},
 
 		_addPlaylist: function() {
+			var self = this;
+			var t = this._translator;
+
+			var addPlaylistButton = new Button('iptvMainCmpPlaylistAddButton');
+			addPlaylistButton.addClass('add-playlist-button');
+			addPlaylistButton.appendChildWidget(new Label(null, t.__('MAIN_CMP_PLAYLIST_ADD_BUTTON')));
+			addPlaylistButton.addEventListener('keydown', function(evt) {
+				if (evt.keyCode === KeyEvent.VK_UP) {
+					self.setActiveChildWidget(self._header);
+
+					var langButton = self._header.getChildWidget('iptvMainCmpHeaderLangButton');
+					self._header.setActiveChildWidget(langButton);
+				} else if (evt.keyCode === KeyEvent.VK_DOWN) {
+					var playlistMenu = self._playlist.getChildWidget('iptvMainCmpPlaylistMenu');
+					self._playlist.setActiveChildWidget(playlistMenu);
+				}
+			});
+			addPlaylistButton.addEventListener('select', function() {
+				var device = self._device;
+				var keyboard = self._keyboard;
+
+				// Show Keyboard
+				device.showElement({
+					el: keyboard.outputElement,
+					skipAnim: true
+				});
+
+				self.setActiveChildWidget(self._keyboard);
+			});
+
 			var dataSource = new DataSource(null, new DataPlaylist(), 'loadData', this._storage);
 			var playlistMenu = new VerticalList('iptvMainCmpPlaylistMenu', new FormatterPlaylist(this._translator), dataSource);
+			playlistMenu.addEventListener('keydown', function(evt) {
+				if (evt.keyCode === KeyEvent.VK_UP || evt.keyCode === KeyEvent.VK_DOWN) {
+					var childWidget = playlistMenu.getActiveChildWidget();
+					if (self._focusedPlaylistChildWidgetId === childWidget.id && evt.keyCode === KeyEvent.VK_UP) {
+						var button = self._playlist.getChildWidget('iptvMainCmpPlaylistAddButton');
+						self._playlist.setActiveChildWidget(button);
+					} else {
+						self._focusedPlaylistChildWidgetId = childWidget.id;
+					}
+				}
+			});
 			playlistMenu.addEventListener('select', function() {
 				console.log('select');
 			});
@@ -117,6 +206,7 @@ define('iptv/appui/components/main', [
 			// Playlist
 			var playlist = new Component('iptvMainCmpPlaylist');
 			playlist.addClass('playlist');
+			playlist.appendChildWidget(addPlaylistButton);
 			playlist.appendChildWidget(playlistMenu);
 			this._playlist = playlist;
 			this.appendChildWidget(playlist);

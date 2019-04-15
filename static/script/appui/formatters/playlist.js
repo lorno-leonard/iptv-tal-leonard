@@ -4,12 +4,10 @@ define('iptv/appui/formatters/playlist', ['antie/formatter', 'antie/widgets/labe
 			this._translator = translator;
 		},
 		format: function(iterator) {
-			// var t = this._translator;
-			// console.log(iterator);
 			var button, item;
 			item = iterator.next();
-			button = new Button('fruit' + item.id);
-			button.appendChildWidget(new Label(item.title));
+			button = new Button('playlist' + iterator._currentIndex);
+			button.appendChildWidget(new Label(item));
 			return button;
 		}
 	});
