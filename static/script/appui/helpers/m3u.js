@@ -1,6 +1,9 @@
-define('iptv/appui/helpers/m3u', [], function() {
+define('iptv/appui/helpers/m3u', ['axios'], function(axios) {
 	return {
-		parse: function(data) {
+		get: function get(url) {
+			return axios.get(url);
+		},
+		parse: function parse(data) {
 			data = data.trim(/[\r\n]/);
 			data = data.split(/\n/);
 			var block = {};
