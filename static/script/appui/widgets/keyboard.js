@@ -116,6 +116,13 @@ define('iptv/appui/widgets/keyboard', [
 							changed = true;
 						}
 						break;
+					case 'CLEAR':
+						if (this._currentText.length > 0) {
+							this._currentText = '';
+							this._correctTitleCase();
+							changed = true;
+						}
+						break;
 					case 'SPACE':
 						changed = this._appendCharacter(' ');
 						break;
@@ -218,6 +225,12 @@ define('iptv/appui/widgets/keyboard', [
 							letter = 'DEL';
 						} else if (letter === '`') {
 							letter = 'SUBMIT';
+						} else if (letter === '~') {
+							letter = 'http://';
+						} else if (letter === '%') {
+							letter = '.com';
+						} else if (letter === '\\') {
+							letter = 'CLEAR';
 						} else if (letter === '_') {
 							continue;
 						}
