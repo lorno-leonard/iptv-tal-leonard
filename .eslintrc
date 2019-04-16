@@ -85,7 +85,8 @@
 		"waitsFor": false,
 		"onDeviceTestConfigValidation": true,
 		"process": true,
-		"__dirname": true
+		"__dirname": true,
+		"Promise": true
 	},
 	"env": {
 		"browser": true

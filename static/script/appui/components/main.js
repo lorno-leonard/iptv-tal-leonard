@@ -80,7 +80,7 @@ define('iptv/appui/components/main', [
 			});
 
 			this.addEventListener('aftershow', function() {
-				self.setActiveChildWidget(self._playlist.getChildWidget('iptvMainCmpPlaylistMenu'));
+				// self.setActiveChildWidget(self._playlist.getChildWidget('iptvMainCmpPlaylistAddButton'));
 			});
 
 			this.addEventListener('submit', function() {
@@ -95,6 +95,7 @@ define('iptv/appui/components/main', [
 					skipAnim: true
 				});
 
+				// Add text to playlist data
 				var text = self._keyboard.getChildWidget('iptvKeyboard').getText();
 				var playlists = self._storage.getItem('playlists');
 				var playlistArr;
@@ -106,8 +107,13 @@ define('iptv/appui/components/main', [
 				}
 				self._storage.setItem('playlists', JSON.stringify(playlistArr));
 
-				self.setActiveChildWidget(self._playlist);
+				// Reload datasource
 				var playlistMenu = self._playlist.getChildWidget('iptvMainCmpPlaylistMenu');
+				var dataSource = new DataSource(null, new DataPlaylist(), 'loadData', self._storage);
+				playlistMenu.setDataSource(dataSource);
+
+				// Set playlist active widget
+				self.setActiveChildWidget(self._playlist);
 				self._playlist.setActiveChildWidget(playlistMenu);
 			});
 
