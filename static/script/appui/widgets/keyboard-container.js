@@ -16,6 +16,19 @@ define('iptv/appui/widgets/keyboard-container', ['antie/widgets/component', 'ipt
 			this._addKeyboard();
 		},
 
+		getText: function getText() {
+			return this._keyboard.getText();
+		},
+
+		setText: function setText(text) {
+			this._keyboard.setText(text);
+		},
+
+		clear: function clear() {
+			this._keyboard.setText('');
+			this._keyboardTextbox.setText('');
+		},
+
 		_addKeyboardTextbox: function() {
 			var textboxContainer = new Component('iptvKeyboardTextboxContainer');
 			textboxContainer.addClass('iptv-keyboard-textbox-container');
