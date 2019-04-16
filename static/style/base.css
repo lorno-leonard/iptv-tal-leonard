@@ -118,6 +118,7 @@ object {
 	color: #152348;
 }
 
+/* Playlist */
 .playlist {
 	margin-top: 75px;
 	padding: 10px;
@@ -126,4 +127,37 @@ object {
 .playlist .add-playlist-button {
 	width: 200px;
 	margin-bottom: 10px;
+}
+
+/* Modal */
+.modal {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.modal .iptv-modal-backdrop {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.8);
+}
+
+.modal .iptv-modal-dialog {
+	max-width: 500px;
+	position: relative;
+	width: auto;
+}
+
+.modal .iptv-modal-content {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
 }

@@ -7,7 +7,9 @@ define('iptv/appui/components/main', [
 	'antie/storageprovider',
 	'antie/datasource',
 	'iptv/appui/widgets/keyboard-container',
+	'iptv/appui/widgets/modal',
 	'iptv/appui/helpers/translate',
+	'iptv/appui/helpers/m3u',
 	'iptv/appui/datasources/playlist',
 	'iptv/appui/formatters/playlist'
 ], function(
@@ -19,7 +21,9 @@ define('iptv/appui/components/main', [
 	StorageProvider,
 	DataSource,
 	WidgetKeyboardContainer,
+	WidgetModal,
 	HelperTranslate,
+	HelperM3u,
 	DataPlaylist,
 	FormatterPlaylist
 ) {
@@ -36,7 +40,7 @@ define('iptv/appui/components/main', [
 			this._application = this.getCurrentApplication();
 			this._device = this._application.getDevice();
 			this._storage = this._device.getStorage(StorageProvider.STORAGE_TYPE_PERSISTENT, 'iptv');
-			// this._storage.clear();
+			this._storage.clear();
 
 			// Initialize tranlator
 			this._translator = null;
@@ -46,6 +50,7 @@ define('iptv/appui/components/main', [
 			this._header = null;
 			this._keyboard = null;
 			this._playlist = null;
+			this._modal = null;
 			this._initWidgets();
 
 			this._focusedPlaylistChildWidgetId = null;
@@ -64,20 +69,15 @@ define('iptv/appui/components/main', [
 			this._addHeader();
 			this._addKeyboard();
 			this._addPlaylist();
+			this._addModal();
 		},
 
 		_initEventListeners: function() {
 			var self = this;
 
 			this.addEventListener('beforeshow', function() {
-				var device = self._device;
-				var keyboard = self._keyboard;
-
-				// Hide Keyboard
-				device.hideElement({
-					el: keyboard.outputElement,
-					skipAnim: true
-				});
+				self.hideComponent(self._keyboard);
+				self.hideComponent(self._modal);
 			});
 
 			this.addEventListener('aftershow', function() {
@@ -117,6 +117,11 @@ define('iptv/appui/components/main', [
 				el: component.outputElement,
 				skipAnim: true
 			});
+		},
+
+		showModal: function showModal(message, title) {
+			this._modal.setText(message, title || null);
+			this.showComponent(this._modal);
 		},
 
 		/* ADD WIDGETS */
@@ -206,8 +211,16 @@ define('iptv/appui/components/main', [
 			this.appendChildWidget(playlist);
 		},
 
+		_addModal: function() {
+			var modal = new WidgetModal('iptvMainCmpModal');
+			this._modal = modal;
+			this.appendChildWidget(modal);
+		},
+
 		/* EVENT HANDLERS */
 		_handlerSubmitPlaylist: function() {
+			// var self = this;
+
 			var keyboard = this._keyboard;
 			var storage = this._storage;
 			var playlist = this._playlist;
@@ -238,6 +251,17 @@ define('iptv/appui/components/main', [
 
 			// Clear keyboard
 			keyboard.clear();
+
+			// var text = keyboard.getText();
+			// HelperM3u.get(text)
+			// 	.then(function(response) {
+			// 		var data = response.data;
+			// 		console.log(HelperM3u.parse(data));
+			// 	})
+			// 	.catch(function(error) {
+			// 		console.log(error.message);
+			// 		self.showModal(error.mesage);
+			// 	});
 		}
 	});
 });
