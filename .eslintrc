@@ -86,7 +86,8 @@
 		"onDeviceTestConfigValidation": true,
 		"process": true,
 		"__dirname": true,
-		"Promise": true
+		"Promise": true,
+		"Uint32Array": true
 	},
 	"env": {
 		"browser": true
