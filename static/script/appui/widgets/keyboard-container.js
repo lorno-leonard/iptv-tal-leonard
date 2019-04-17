@@ -45,11 +45,11 @@ define('iptv/appui/widgets/keyboard-container', ['antie/widgets/component', 'ipt
 			var self = this;
 			var cols = 15;
 			var rows = 3;
-			// ~ - http://
 			// % - .com
 			// ` - Submit
 			// \ - Clear
-			var keys = ['~qwertyuiop789%', ' asdfghjkl/456-', '`zxcvbnm.:0123\\'].join('');
+			// ~ - Cancel
+			var keys = ['%qwertyuiop789-', ' asdfghjkl/456\\', '`zxcvbnm.:0123~'].join('');
 			var keyboard = new WidgetKeyboard('iptvKeyboard', cols, rows, keys);
 
 			keyboard.addClass('iptv-keyboard');

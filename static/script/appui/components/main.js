@@ -78,14 +78,20 @@ define('iptv/appui/components/main', [
 			this.addEventListener('beforeshow', function() {
 				self.hideComponent(self._keyboard);
 				self.hideComponent(self._modal);
+				// self._modal.setText('Lorem ipsum', 'Info');
+				// self.setActiveChildWidget(self._modal);
 			});
 
 			this.addEventListener('aftershow', function() {
 				// self.setActiveChildWidget(self._playlist.getChildWidget('iptvMainCmpPlaylistAddButton'));
 			});
 
-			this.addEventListener('submit', function() {
+			this.addEventListener('submit_playlist_url', function() {
 				self._handlerSubmitPlaylist();
+			});
+
+			this.addEventListener('cancel_playlist_url', function() {
+				self._handlerCancelPlaylist();
 			});
 
 			// calls Application.ready() the first time the component is shown
@@ -122,6 +128,7 @@ define('iptv/appui/components/main', [
 		showModal: function showModal(message, title) {
 			this._modal.setText(message, title || null);
 			this.showComponent(this._modal);
+			this.setActiveChildWidget(this._modal);
 		},
 
 		/* ADD WIDGETS */
@@ -180,8 +187,7 @@ define('iptv/appui/components/main', [
 				}
 			});
 			addPlaylistButton.addEventListener('select', function() {
-				// Show Keyboard
-				self.showComponent(self._keyboard);
+				self._handlerAddPlaylistButton();
 			});
 
 			// Playlist menu - vertical list
@@ -212,14 +218,21 @@ define('iptv/appui/components/main', [
 		},
 
 		_addModal: function() {
-			var modal = new WidgetModal('iptvMainCmpModal');
+			var modal = new WidgetModal('iptvMainCmpModal', '_handlerCloseModal');
 			this._modal = modal;
 			this.appendChildWidget(modal);
 		},
 
 		/* EVENT HANDLERS */
+		_handlerAddPlaylistButton: function() {
+			// Show Keyboard
+			this.showComponent(this._keyboard);
+
+			this._keyboard.getChildWidget('iptvKeyboard').setActiveChildKey('q');
+		},
+
 		_handlerSubmitPlaylist: function() {
-			// var self = this;
+			var self = this;
 
 			var keyboard = this._keyboard;
 			var storage = this._storage;
@@ -228,40 +241,61 @@ define('iptv/appui/components/main', [
 			// Hide Keyboard
 			this.hideComponent(keyboard);
 
-			// Add text to playlist data
-			var text = keyboard.getText();
-			var playlists = storage.getItem('playlists');
-			var playlistArr;
-			if (!playlists) {
-				playlistArr = [text];
-			} else {
-				playlistArr = JSON.parse(playlists);
-				playlistArr.push(text);
-			}
-			storage.setItem('playlists', JSON.stringify(playlistArr));
-
-			// Reload datasource
-			var playlistMenu = playlist.getChildWidget('iptvMainCmpPlaylistMenu');
-			var dataSource = new DataSource(null, new DataPlaylist(), 'loadData', storage);
-			playlistMenu.setDataSource(dataSource);
-
-			// Set playlist active widget
-			this.setActiveChildWidget(playlist);
-			playlist.setActiveChildWidget(playlistMenu);
-
-			// Clear keyboard
-			keyboard.clear();
-
+			// // Add text to playlist data
 			// var text = keyboard.getText();
-			// HelperM3u.get(text)
-			// 	.then(function(response) {
-			// 		var data = response.data;
-			// 		console.log(HelperM3u.parse(data));
-			// 	})
-			// 	.catch(function(error) {
-			// 		console.log(error.message);
-			// 		self.showModal(error.mesage);
-			// 	});
+			// var playlists = storage.getItem('playlists');
+			// var playlistArr;
+			// if (!playlists) {
+			// 	playlistArr = [text];
+			// } else {
+			// 	playlistArr = JSON.parse(playlists);
+			// 	playlistArr.push(text);
+			// }
+			// storage.setItem('playlists', JSON.stringify(playlistArr));
+
+			// // Reload datasource
+			// var playlistMenu = playlist.getChildWidget('iptvMainCmpPlaylistMenu');
+			// var dataSource = new DataSource(null, new DataPlaylist(), 'loadData', storage);
+			// playlistMenu.setDataSource(dataSource);
+
+			// // Set playlist active widget
+			// this.setActiveChildWidget(playlist);
+			// playlist.setActiveChildWidget(playlistMenu);
+
+			// // Clear keyboard
+			// keyboard.clear();
+
+			var text = keyboard.getText();
+			text.trim();
+			HelperM3u.get(text)
+				.then(function(response) {
+					var data = HelperM3u.parse(response.data);
+					if (data.ITEMS.length === 0) {
+						self.showModal('No data available', 'Error');
+					} else {
+						console.log(data.ITEMS, response.headers);
+					}
+				})
+				.catch(function(error) {
+					console.log(error.message);
+					self.showModal('Cannot get m3u data from url ' + text, 'Error');
+				});
+		},
+
+		_handlerCancelPlaylist: function() {
+			// Clear keyboard
+			this._keyboard.clear();
+
+			// Hide Keyboard
+			this.hideComponent(this._keyboard);
+
+			// Set Playlist active
+			this.setActiveChildWidget(this._playlist);
+		},
+
+		_handlerCloseModal: function() {
+			this.hideComponent(this._modal);
+			this.setActiveChildWidget(this._playlist);
 		}
 	});
 });

@@ -127,7 +127,10 @@ define('iptv/appui/widgets/keyboard', [
 						changed = this._appendCharacter(' ');
 						break;
 					case 'SUBMIT':
-						this.bubbleEvent(new Event('submit'));
+						this.bubbleEvent(new Event('submit_playlist_url'));
+						break;
+					case 'CANCEL':
+						this.bubbleEvent(new Event('cancel_playlist_url'));
 						break;
 					default:
 						changed = this._appendCharacter(letter);
@@ -226,7 +229,7 @@ define('iptv/appui/widgets/keyboard', [
 						} else if (letter === '`') {
 							letter = 'SUBMIT';
 						} else if (letter === '~') {
-							letter = 'http://';
+							letter = 'CANCEL';
 						} else if (letter === '%') {
 							letter = '.com';
 						} else if (letter === '\\') {
