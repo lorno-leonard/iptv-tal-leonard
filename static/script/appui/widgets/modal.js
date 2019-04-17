@@ -1,7 +1,9 @@
 define('iptv/appui/widgets/modal', ['antie/widgets/component', 'antie/widgets/button', 'antie/widgets/label'], function(Component, Button, Label) {
 	var ipTvModal = Component.extend({
-		init: function init(id) {
+		init: function init(id, OkHandlerName) {
 			init.base.call(this, id);
+
+			var self = this;
 
 			this.addClass('iptv-modal');
 			this.addClass('modal');
@@ -23,10 +25,23 @@ define('iptv/appui/widgets/modal', ['antie/widgets/component', 'antie/widgets/bu
 			modalBody.addClass('iptv-modal-body');
 			modalBody.appendChildWidget(modalMessage);
 
+			var modalFooterButtonLabel = new Label('iptvModalFooterButtonLabel');
+			modalFooterButtonLabel.setText('OK');
+			var modalFooterButton = new Button('iptvModalFooterButton');
+			modalFooterButton.addClass('button');
+			modalFooterButton.appendChildWidget(modalFooterButtonLabel);
+			modalFooterButton.addEventListener('select', function() {
+				self.parentWidget[OkHandlerName]();
+			});
+			var modalFooter = new Component('iptvModalFooter');
+			modalFooter.addClass('iptv-modal-footer');
+			modalFooter.appendChildWidget(modalFooterButton);
+
 			var modalContent = new Component('iptvModalContent');
 			modalContent.addClass('iptv-modal-content');
 			modalContent.appendChildWidget(modalHeader);
 			modalContent.appendChildWidget(modalBody);
+			modalContent.appendChildWidget(modalFooter);
 
 			var modalDialog = new Component('iptvModalDialog');
 			modalDialog.addClass('iptv-modal-dialog');
